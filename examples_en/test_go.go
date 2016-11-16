@@ -20,14 +20,14 @@ const (
         SHA384
       )
 
-# domain        - string, the canonical domain name with trailing dot
-# flags         - uint16 flags, the flags of the DNSKEY (only 257)
-# protocol      - uint8 protocol, the protocol of the DNSKEY (only 3)
-# algorithm     - uint8 algoritm, the algorithm of the DNSKEY (only 3, 5, 6, 7, 8, 10, 12, 13 or 14)
-# publickey     - string publickey, the full publickey base64 encoded (care, no spaces allowed)
-# digest_alg    - int, the hash algorithm for the DS digest (constants SHA1, SHA256, GOST_CRYPTO or SHA384)
-#
-# return keytag and DS signature as a array
+// domain        - string, the canonical domain name with trailing dot
+// flags         - uint16 flags, the flags of the DNSKEY (only 257)
+// protocol      - uint8 protocol, the protocol of the DNSKEY (only 3)
+// algorithm     - uint8 algoritm, the algorithm of the DNSKEY (only 3, 5, 6, 7, 8, 10, 12, 13 or 14)
+// publickey     - string publickey, the full publickey base64 encoded (care, no spaces allowed)
+// digest_alg    - int, the hash algorithm for the DS digest (constants SHA1, SHA256, GOST_CRYPTO or SHA384)
+//
+// return keytag and DS signature as a array
 
 func calc_ds(owner string, flags uint16, protocol uint8, algorithm uint8, publickey string, digest_alg int) (uint16,[]byte) {
         var keytag int

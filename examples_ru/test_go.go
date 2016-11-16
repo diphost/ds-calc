@@ -20,14 +20,14 @@ const (
         SHA384
       )
 
-# owner         - string, каноническое имя домена с точкой на конце
-# flags         - uint16, флаги DNSKEY (для KSK всегда 257)
-# protocol      - uint8, протокол DNSKEY (всегда 3)
-# algorithm     - uint8, алгоритм ключа DNSKEY (only 3, 5, 6, 7, 8, 10, 12, 13 или 14)
-# publickey     - string, публичная часть ключа DNSKEY в base64 кодировке (без пробелов)
-# digest_alg    - int, алгоритм отпечатка для DS (константы SHA1, SHA256, GOST_CRYPTO и SHA384)
-#
-# возвращает массив, состоящий из keytag и отпечатка DS
+// owner         - string, каноническое имя домена с точкой на конце
+// flags         - uint16, флаги DNSKEY (для KSK всегда 257)
+// protocol      - uint8, протокол DNSKEY (всегда 3)
+// algorithm     - uint8, алгоритм ключа DNSKEY (only 3, 5, 6, 7, 8, 10, 12, 13 или 14)
+// publickey     - string, публичная часть ключа DNSKEY в base64 кодировке (без пробелов)
+// digest_alg    - int, алгоритм отпечатка для DS (константы SHA1, SHA256, GOST_CRYPTO и SHA384)
+//
+// возвращает массив, состоящий из keytag и отпечатка DS
 func calc_ds(owner string, flags uint16, protocol uint8, algorithm uint8, publickey string, digest_alg int) (uint16,[]byte) {
         var keytag int
         dnskey_rdata := []byte{byte(flags >> 8), byte(flags), byte(protocol), byte(algorithm)}
