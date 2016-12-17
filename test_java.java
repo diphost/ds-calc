@@ -24,7 +24,7 @@ class TestCalcDS {
                 DSRecord ds_sha256 = new DSRecord(owner, 1, 3600, 2, dnskey);
                 DSRecord ds_gost3411 = new DSRecord(owner, 1, 3600, 3, dnskey);
                 DSRecord ds_sha384 = new DSRecord(owner, 1, 3600, 4, dnskey);
-                // output results with test reference
+                // output results with test test and calculated data
                 System.out.println("REF:\texample.com.\t\t3600\tIN\tDS\t20545 13 2 E460EAB7D69ABDE51078BC27CE8377074CA94EE05F5A609E5593C5E25ACF2BF4");
                 System.out.println("CALC:\t" + ds_sha256.toString() + "\n");
                 System.out.println("REF:\texample.com.\t\t3600\tIN\tDS\t20545 13 3 9B8E8392B2C8203CEC672AE891329221678CE06E5FE861DB61688F0C1CA0B494");

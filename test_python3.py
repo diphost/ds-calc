@@ -38,7 +38,7 @@ def calc_ds(owner, flags, protocol, algorithm, publickey, digest_alg):
                 digest = hashlib.sha384(domain_wire_format + dnskey_rdata).hexdigest().upper()
         return (keytag, digest)
 
-# Test with predefined test data
+# Test with test data
 if __name__ == "__main__":
         dnskey = {
                 'domain':'example.com.',
@@ -48,12 +48,12 @@ if __name__ == "__main__":
                 'key':"6a81escFb5QysOzJopVCPslEyldHJxOlNIq3ol0xZPeLn6HBLwdRIaxz1aYpefJHPaj+seBti4j5gLWYetY3vA==",
         };
         (keytag, digest) = calc_ds(dnskey['domain'], dnskey['flags'], dnskey['protocol'], dnskey['algorithm'], dnskey['key'], 'sha256');
-        print("REF:    example.com. IN DS 20545 13 2 E460EAB7D69ABDE51078BC27CE8377074CA94EE05F5A609E5593C5E25ACF2BF4")
+        print("TEST:   example.com. IN DS 20545 13 2 E460EAB7D69ABDE51078BC27CE8377074CA94EE05F5A609E5593C5E25ACF2BF4")
         print("CALC:   %s IN DS %d %d 2 %s\n" % (dnskey['domain'], keytag, dnskey['algorithm'], digest))
         (keytag, digest) = calc_ds(dnskey['domain'], dnskey['flags'], dnskey['protocol'], dnskey['algorithm'], dnskey['key'], 'gost-crypto');
-        print("REF:    example.com. IN DS 20545 13 3 9B8E8392B2C8203CEC672AE891329221678CE06E5FE861DB61688F0C1CA0B494")
+        print("TEST:   example.com. IN DS 20545 13 3 9B8E8392B2C8203CEC672AE891329221678CE06E5FE861DB61688F0C1CA0B494")
         print("CALC:   %s IN DS %d %d 3 %s\n" % (dnskey['domain'], keytag, dnskey['algorithm'], digest))
         (keytag, digest) = calc_ds(dnskey['domain'], dnskey['flags'], dnskey['protocol'], dnskey['algorithm'], dnskey['key'], 'sha384');
-        print("REF:    example.com. IN DS 20545 13 4 99436F3FB883CA4F077798C206037D97A34560245E57F1FFB10222B12AB8BD73755B1C41BFF6CF039E942CD3CB3950C1")
+        print("TEST:   example.com. IN DS 20545 13 4 99436F3FB883CA4F077798C206037D97A34560245E57F1FFB10222B12AB8BD73755B1C41BFF6CF039E942CD3CB3950C1")
         print("CALC:   %s IN DS %d %d 4 %s\n"% (dnskey['domain'], keytag, dnskey['algorithm'], digest))
 
