@@ -4,9 +4,9 @@
  * $domain      - string, the canonical domain name with trailing dot
  * $flags       - int, the flags of the DNSKEY (always 257)
  * $protocol    - int, the protocol of the DNSKEY (always 3)
- * $algorithm   - int, the algorithm of the DNSKEY (5, 7, 8, 10, 12, 13 or 14)
+ * $algorithm   - int, the algorithm of the DNSKEY (8, 10, 12, 13 or 14)
  * $publickey   - string publickey, the full publickey base64 encoded (care, no spaces allowed)
- * $digest_alg  - string, the hash algorithm for the DS digest (sha1, sha256, gost-crypto or sha384)
+ * $digest_alg  - string, the hash algorithm for the DS digest (sha256, gost-crypto or sha384)
  *
  * return keytag and DS signature as a array
  *
@@ -42,9 +42,6 @@ $dnskey = array(
 	'key' => "6a81escFb5QysOzJopVCPslEyldHJxOlNIq3ol0xZPeLn6HBLwdRIaxz1aYpefJHPaj+seBti4j5gLWYetY3vA==",
 );
 
-list($keytag, $digest) = calc_ds($dnskey['domain'], $dnskey['flags'], $dnskey['protocol'], $dnskey['algorithm'], $dnskey['key'],'sha1');
-print("REF:    example.com. IN DS 20545 13 1 40BD7CF025EEB433F9E74127009BD0AF8C16F449\n");
-print("CALC:   " . $dnskey['domain'] ." IN DS $keytag ". $dnskey['algorithm'] . " 1 $digest\n\n");
 list($keytag, $digest) = calc_ds($dnskey['domain'], $dnskey['flags'], $dnskey['protocol'], $dnskey['algorithm'], $dnskey['key'],'sha256');
 print("REF:    example.com. IN DS 20545 13 2 E460EAB7D69ABDE51078BC27CE8377074CA94EE05F5A609E5593C5E25ACF2BF4\n");
 print("CALC:   " . $dnskey['domain'] ." IN DS $keytag ". $dnskey['algorithm'] . " 2 $digest\n\n");

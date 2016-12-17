@@ -5,7 +5,6 @@ import (
         "strings"
         "bytes"
         "hash"
-        "crypto/sha1"
         "crypto/sha256"
         "cypherpunks.ru/gogost/gost28147"       // http://www.cypherpunks.ru/gogost/ >=2.0
         "cypherpunks.ru/gogost/gost341194"      // for GOST 34.11-94 hash
@@ -24,9 +23,9 @@ const (
 // domain        - string, the canonical domain name with trailing dot
 // flags         - uint16 flags, the flags of the DNSKEY (always 257)
 // protocol      - uint8 protocol, the protocol of the DNSKEY (always 3)
-// algorithm     - uint8 algoritm, the algorithm of the DNSKEY (5, 7, 8, 10, 12, 13 or 14)
+// algorithm     - uint8 algoritm, the algorithm of the DNSKEY (8, 10, 12, 13 or 14)
 // publickey     - string publickey, the full publickey base64 encoded (care, no spaces allowed)
-// digest_alg    - int, the hash algorithm for the DS digest (constants SHA1, SHA256, GOST_CRYPTO or SHA384)
+// digest_alg    - int, the hash algorithm for the DS digest (constants SHA256, GOST_CRYPTO or SHA384)
 //
 // return keytag and DS signature as a array
 func calc_ds(owner string, flags uint16, protocol uint8, algorithm uint8, publickey string, digest_alg int) (uint16,[]byte) {
@@ -53,8 +52,6 @@ func calc_ds(owner string, flags uint16, protocol uint8, algorithm uint8, public
         // calculate digest
         var hasher hash.Hash
 	switch digest_alg {
-	case SHA1:
-		hasher = sha1.New()
 	case SHA256:
 		hasher = sha256.New()
         case GOST_CRYPTO:
@@ -80,9 +77,6 @@ func main() {
         var keytag uint16
         var digest []byte
         d := Dnskey{"example.com.", 257, 3, 13, "6a81escFb5QysOzJopVCPslEyldHJxOlNIq3ol0xZPeLn6HBLwdRIaxz1aYpefJHPaj+seBti4j5gLWYetY3vA=="}
-        keytag, digest = calc_ds(d.domain, d.flags, d.protocol, d.algorithm, d.publickey, SHA1)
-        fmt.Println("REF:    example.com. IN DS 20545 13 1 40BD7CF025EEB433F9E74127009BD0AF8C16F449")
-        fmt.Printf("CALC:   %s IN DS %d %d 1 %s\n\n", d.domain, keytag, d.algorithm, digest)
         keytag, digest = calc_ds(d.domain, d.flags, d.protocol, d.algorithm, d.publickey, SHA256)
         fmt.Println("REF:    example.com. IN DS 20545 13 2 E460EAB7D69ABDE51078BC27CE8377074CA94EE05F5A609E5593C5E25ACF2BF4")
         fmt.Printf("CALC:   %s IN DS %d %d 2 %s\n\n", d.domain, keytag, d.algorithm, digest)

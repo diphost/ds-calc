@@ -10,9 +10,9 @@ from pygost.utils import hexenc                 # for GOST 34.11-94 hash
 # owner         - string, the canonical domain name with trailing dot
 # flags         - int, the flags of the DNSKEY (always 257)
 # protocol      - int, the protocol of the DNSKEY (always 3)
-# algorithm     - int, the algorithm of the DNSKEY (5, 7, 8, 10, 12, 13 or 14)
+# algorithm     - int, the algorithm of the DNSKEY (8, 10, 12, 13 or 14)
 # publickey     - string, the full publickey base64 encoded (care, no spaces allowed)
-# digest_alg    - string, the hash algorithm for the DS digest (sha1, sha256, gost-crypto or sha384)
+# digest_alg    - string, the hash algorithm for the DS digest (sha256, gost-crypto or sha384)
 #
 # return tuple with two values - keytag and DS signature as a array
 def calc_ds(owner, flags, protocol, algorithm, publickey, digest_alg):
@@ -30,8 +30,6 @@ def calc_ds(owner, flags, protocol, algorithm, publickey, digest_alg):
         for part in owner.split('.'):
                 domain_wire_format += struct.pack('B', len(part))+part
         # calculate digest
-        if digest_alg == 'sha1':
-                digest = hashlib.sha1(domain_wire_format + dnskey_rdata).hexdigest().upper()
         if digest_alg == 'sha256':
                 digest = hashlib.sha256(domain_wire_format + dnskey_rdata).hexdigest().upper()
         if digest_alg == 'gost-crypto':
@@ -49,9 +47,6 @@ if __name__ == "__main__":
                 'algorithm':13,
                 'key':"6a81escFb5QysOzJopVCPslEyldHJxOlNIq3ol0xZPeLn6HBLwdRIaxz1aYpefJHPaj+seBti4j5gLWYetY3vA==",
         };
-        (keytag, digest) = calc_ds(dnskey['domain'], dnskey['flags'], dnskey['protocol'], dnskey['algorithm'], dnskey['key'], 'sha1');
-        print("REF:    example.com. IN DS 20545 13 1 40BD7CF025EEB433F9E74127009BD0AF8C16F449")
-        print("CALC:   %s IN DS %d %d 1 %s\n" % (dnskey['domain'], keytag, dnskey['algorithm'], digest))
         (keytag, digest) = calc_ds(dnskey['domain'], dnskey['flags'], dnskey['protocol'], dnskey['algorithm'], dnskey['key'], 'sha256');
         print("REF:    example.com. IN DS 20545 13 2 E460EAB7D69ABDE51078BC27CE8377074CA94EE05F5A609E5593C5E25ACF2BF4")
         print("CALC:   %s IN DS %d %d 2 %s\n" % (dnskey['domain'], keytag, dnskey['algorithm'], digest))
